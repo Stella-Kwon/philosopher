@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routines.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:00:11 by sukwon            #+#    #+#             */
-/*   Updated: 2024/06/28 13:52:28 by suminkwon        ###   ########.fr       */
+/*   Updated: 2024/07/02 16:42:12 by skwon2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,11 @@ void	*philo_routine(t_data *data)
 	while (data->all_alive)
 	{
 		
-			eating()
+		if (data->num_philos % 2 == 0)
+			eating
+		else 
+			wait,
+			eating,
 		
 	}
 
@@ -26,10 +30,10 @@ void	*philo_routine(t_data *data)
 
 int		eating(t_data *data)
 {
-	if (death_check(data))
-		retrun (EXIT_FAILURE);
-	if (eating(data));
-	
+	// if (death_check(data))
+	// 	retrun (EXIT_FAILURE); monitor will proceed
+
+	unll
 }
 
 int		thinking(t_data *data)
