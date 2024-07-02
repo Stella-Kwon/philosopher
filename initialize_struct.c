@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_struct.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:18:23 by sukwon            #+#    #+#             */
-/*   Updated: 2024/06/27 11:13:17 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/06/28 15:38:26 by suminkwon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philos_init(t_data *data)
+int	philos_init(t_data *data)
 {
 	int i;
 
@@ -24,12 +24,15 @@ void	philos_init(t_data *data)
 		data->philos[i].last_meal = get_elapsed_time(data); // 초기화된 마지막 식사 시간 = 처음에는 0이라고 보면된다.
 		data->philos[i].eaten_meal_count = 0;
 		data->philos[i].data = data; // 자신이 속한 데이터 구조체 설정
-		pthread_mutex_init(&data->philos[i].left_fork, NULL); // 왼쪽 포크 뮤텍스 초기화(생성이라고 보면 된다)
-		pthread_mutex_init(&data->philos[i].right_fork, NULL); // 오른쪽 포크 뮤텍스 초기화(생성이라고 보면 된다)
+		if (init_mutex(&data->philos[i].left_fork, "data->philos[i].left_fork") != 0) // 왼쪽 포크 뮤텍스 초기화(생성이라고 보면 된다)
+			return (EXIT_FAILURE);
+		if (init_mutex(&data->philos[i].right_fork, "data->philos[i].right_fork") != 0) // 오른쪽 포크 뮤텍스 초기화(생성이라고 보면 된다)
+			return (EXIT_FAILURE);
 	}
+	return (EXIT_SUCCESS);
 }
 
-void	data_philos_init(t_data *data, char **argv)
+int	data_philos_init(t_data *data, char **argv)
 {
 	int	i;
 
@@ -43,11 +46,18 @@ void	data_philos_init(t_data *data, char **argv)
 	else
 		data->must_eat_count = -1; // 지정된 횟수없다는 의미로 -1
 	data->all_alive = true; //초기 상태는 모두 생존으로 설정
-	pthread_mutex_init(&data->print_lock, NULL); //print_lock 생성
+	if (init_mutex(&data->print_lock, "data->print_lock") != 0)
+		return (EXIT_FAILURE); //print_lock 생성
 	data->forks = malloc(data->num_philos * sizeof(pthread_mutex_t));
 	i = 0;
-	while (i++ < data->num_philos)
-		pthread_mutex_init(&data->forks[i], NULL);
+	while (i < data->num_philos)
+	{
+		if (init_mutex(&data->forks[i], "data->forks[i]") != 0)
+			return (EXIT_FAILURE);
+		i++;
+	}
 	data->timestamps = data->init_time; // 초기화된 타임스탬프 값
-	philos_init(data);
+	if (philos_init(data) == 1)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

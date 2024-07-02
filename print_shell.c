@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   print_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:17:23 by sukwon            #+#    #+#             */
-/*   Updated: 2024/06/26 22:18:07 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/06/28 15:41:46 by suminkwon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	print_action(t_data *data, int actions)
-{
-	pthread_mutex_lock(&(data->print_lock));
+int	print_action(t_data *data, int actions)
+{	
+	if (lock_mutex(&(data->print_lock), "data->print_lock"))
+		return (EXIT_FAILURE);
 	printf("%d %d ", data->timestamps, data->philos->id);
 	if (actions == TAKEN_FORKS)
 		printf("has taken a fork\n");
@@ -26,5 +27,13 @@ void	print_action(t_data *data, int actions)
 		printf("is sleeping\n");
 	else if (actions == DIED)
 		printf("died\n");
-	pthread_mutex_unlock(&(data->print_lock));
+	if (unlock_mutex(&(data->print_lock), "data->print_lock"))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+int	error_print(t_data	*data, char *msg)
+{
+	printf("%d\n", msg);
+	return (EXIT_FAILURE); // 1
 }

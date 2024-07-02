@@ -1,22 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_destroy.c                                     :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 10:46:02 by sukwon            #+#    #+#             */
-/*   Updated: 2024/06/27 11:16:17 by sukwon           ###   ########.fr       */
+/*   Created: 2024/06/28 15:42:38 by suminkwon         #+#    #+#             */
+/*   Updated: 2024/06/28 15:43:02 by suminkwon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	unlock_mutex(t_data *data)
+void malloc_free(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i++ < data->num_philos)
-	data->
+    if (data->forks)
+    {
+        free(data->forks);
+        data->forks = NULL;
+    }
+    if (data->philos)
+    {
+        free(data->philos);
+        data->philos = NULL;
+    }
 }

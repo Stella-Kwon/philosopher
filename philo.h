@@ -48,16 +48,30 @@ typedef struct s_data
 	struct s_threads	*philos;
 }	t_data;
 
-// get_time
-int	get_time();
-int	get_elapsed_time(t_data *data);
+//initializer
+int philos_init(t_data *data);
+int data_philos_init(t_data *data, char **argv);
 
-// intializing
-void	data_philos_init(t_data *data, char **argv);
+// get_time
+int		get_time();
+int		get_elapsed_time(t_data *data);
 
 //print_shell
-void	print_action(t_data *data, int actions);
+int	print_action(t_data *data, int actions);
+int		error_print(t_data *data, char *msg);
 
+// mutex
+int 	unlock_mutex(t_data *data);
 
+//free malloc
+void	malloc_free(t_data *data);
 
+// threads
+int	create_thread_philos(t_data *data);
+int	wait_threads(t_data *data);
+
+//routines
+int *philo_routine(t_data *data);
+
+//
 #endif
