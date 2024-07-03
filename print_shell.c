@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   print_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:17:23 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/02 16:42:13 by skwon2           ###   ########.fr       */
+/*   Updated: 2024/07/03 14:12:45 by suminkwon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	print_action(t_data *data, int actions)
-{	
-	if (lock_mutex(&(data->print_lock), "data->print_lock"))
+int	print_action(t_data *data, int actions, int philo)
+{
+	if (lock_mutex(&(data->print_lock), "data->print_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	printf("%d %d ", data->timestamps, data->philos->id);
+	printf("%d %d ", data->timestamps, philo);
 	if (actions == TAKEN_FORKS)
 		printf("has taken a fork\n");
 	else if (actions == EATING)
@@ -27,13 +27,13 @@ int	print_action(t_data *data, int actions)
 		printf("is sleeping\n");
 	else if (actions == DIED)
 		printf("died\n");
-	if (unlock_mutex(&(data->print_lock), "data->print_lock"))
+	if (unlock_mutex(&(data->print_lock), "data->print_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	error_print(t_data	*data, char *msg)
-{
-	printf("%d\n", msg);
-	return (EXIT_FAILURE); // 1
-}
+// int	error_print(char *msg)
+// {
+// 	printf("%d\n", msg);
+// 	return (EXIT_FAILURE); // 1
+// }

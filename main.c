@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 21:20:25 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/02 16:42:18 by skwon2           ###   ########.fr       */
+/*   Updated: 2024/07/03 13:52:30 by suminkwon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ int	main(int argc, char	**argv)
 {
 	t_data		data;
 
-	data_philos_init(&data, argv);
-	create_thread_philos(&data);
+	if (data_philos_init(&data, argv) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (create_thread_philos(&data) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	
 	return (0);
 }

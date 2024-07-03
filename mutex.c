@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 10:46:02 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/02 16:42:16 by skwon2           ###   ########.fr       */
+/*   Updated: 2024/07/03 12:14:21 by suminkwon        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ int init_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 	return (EXIT_SUCCESS);
 }
 
-int	destroy_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
+int destroy_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 {
-	if (pthread_mutex_destroy(mutex)!= 0)
+	if (pthread_mutex_destroy(mutex) != 0)
 	{
 		printf("%s : thread_mutex_destroy has been failed\n", name_of_mutex);
 		return (EXIT_FAILURE);
@@ -59,14 +59,13 @@ int rm_all_mutex(t_data *data)
 	i = 0;
 	while (i < data->num_philos)
 	{
-		if (destroy_mutex(&data->forks[i], "&data->forks[i]") != 0)
+		if (destroy_mutex(&data->forks[i], "&data->forks[i]") == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		i ++;
+		i++;
 	}
-	if (destroy_mutex(&data->philos->left_fork, "data->philos->left_fork") != 0)
+	if (destroy_mutex(&data->philos->left_fork, "data->philos->left_fork") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (destroy_mutex(&data->philos->right_fork, "data->philos->right_fork") != 0)
+	if (destroy_mutex(&data->philos->right_fork, "data->philos->right_fork") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
