@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_time.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:16:54 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/03 14:50:42 by suminkwon        ###   ########.fr       */
+/*   Updated: 2024/07/05 01:40:14 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,5 @@ int	get_time()
 		printf("gettimeofday is failed\n");
 		return (-100);
 	}
-    return (time.tv_sec * 1000 + time.tv_usec / 1000);
+    return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
-
-// int	get_elapsed_time(t_data *data)
-// {
-// 	if (get_time == -100)
-// 		return (EXIT_FAILURE);
-// 	}
-// 	(data)->timestamps = get_time() - (data)->init_time;
-// 	return(data->timestamps);
-// }

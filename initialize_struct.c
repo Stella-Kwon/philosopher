@@ -3,39 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   initialize_struct.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:18:23 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/03 14:54:44 by suminkwon        ###   ########.fr       */
+/*   Updated: 2024/07/05 02:03:24 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	philos_init(t_data *data)
+static int	philos_init(t_data *data)
 {
 	int i;
 
 	i = 0;
 	data->philos = malloc(data->num_philos * sizeof(t_threads));
-	while (i++ < data->num_philos)
+	while (i < data->num_philos)
 	{
 		data->philos[i].id = i + 1; // 철학자 ID 설정 (1부터 시작)
 		data->philos[i].last_meal = data->init_time;// 초기화된 마지막 식사 시간 = 처음에는 0이라고 보면된다.
-		data->philos[i].eaten_meal_count = 0;
+		
 		data->philos[i].data = data; // 자신이 속한 데이터 구조체 설정
-		if (init_mutex(&data->philos[i].left_fork, "data->philos[i].left_fork") != 0) // 왼쪽 포크 뮤텍스 초기화(생성이라고 보면 된다)
-			return (EXIT_FAILURE);
-		if (init_mutex(&data->philos[i].right_fork, "data->philos[i].right_fork") != 0) // 오른쪽 포크 뮤텍스 초기화(생성이라고 보면 된다)
-			return (EXIT_FAILURE);
+		// data->philos[i].right_fork = 0;
+		// data->philos[i].left_fork = 0;
+		if (init_mutex(&data->philos[i].lastmeal_lock, "data->lastmeal_lock") != 0)
+			return (EXIT_FAILURE); //lastmeal_lock 생성
+		i++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	data_philos_init(t_data *data, char **argv)
+static int	data_philos_init_first(t_data *data, char **argv)
 {
-	int	i;
-
 	data->init_time = get_time(data); // 초기화된 시간 값, 제일 먼저 설정.
 	if (data->init_time == -100)
 		return (EXIT_FAILURE);
@@ -47,9 +46,27 @@ int	data_philos_init(t_data *data, char **argv)
 		data->must_eat_count = ft_atoi(argv[5]);
 	else
 		data->must_eat_count = 0; // 지정된 횟수없다는 의미로 -1
+	data->eaten_meal_count = 0;
 	data->all_alive = true; //초기 상태는 모두 생존으로 설정
+	data->error_flag = false; 
+	if (init_mutex(&data->error_lock, "data->error_lock") != 0)
+		return (EXIT_FAILURE); //error_lock 생성
+	if (init_mutex(&data->eaten_meal_lock, "data->eaten_meal_lock") != 0)
+		return (EXIT_FAILURE); //error_lock 생성
+	if (init_mutex(&data->alive_lock, "data->alive_lock") != 0)
+		return (EXIT_FAILURE); //alive_lock 생성
 	if (init_mutex(&data->print_lock, "data->print_lock") != 0)
 		return (EXIT_FAILURE); //print_lock 생성
+
+	return (EXIT_SUCCESS);
+}
+
+int	data_philos_init_whole(t_data *data, char **argv)
+{
+	int	i;
+
+	if (data_philos_init_first(data, argv) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	data->forks = malloc(data->num_philos * sizeof(pthread_mutex_t));
 	i = 0;
 	while (i < data->num_philos)
@@ -58,7 +75,6 @@ int	data_philos_init(t_data *data, char **argv)
 			return (EXIT_FAILURE);
 		i++;
 	}
-	data->timestamps = data->init_time; // 초기화된 타임스탬프 값
 	if (philos_init(data) == 1)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

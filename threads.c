@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:05:41 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/03 14:32:00 by suminkwon        ###   ########.fr       */
+/*   Updated: 2024/07/04 12:07:40 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ int create_thread_philos(t_data *data)
 
 	i = 0;
 
-	if (pthread_create(&(data->monitor), NULL, monitoring, (void *)data) != 0)
+	if (pthread_create(&(data->monitor), NULL, monitoring_death, (void *)data) != 0)
 	{
 		printf("data->monitor : pthread_create has been failed\n");
 		return (EXIT_FAILURE);
 	}
 	while (i < data->num_philos)
 	{
-		if (pthread_create(&(data->philos[i].philo), NULL, philo_routine, (void *)data) != 0)
+		if (pthread_create(&(data->philos[i].philo), NULL, philo_routine, &data->philos[i]) != 0)
 		{
 			printf("data->philos[%d].philo : pthread_create has been failed\n", i);
 			if (detach_thread_philos(data) == 1)
@@ -58,14 +58,14 @@ int wait_threads(t_data *data)
 	int i;
 
 	i = 0;
-	if (pthread_join(&data->monitor, NULL) != 0) // NULL can be some varialbes that if the threads has a return value to store
+	if (pthread_join(data->monitor, NULL) != 0) // NULL can be some varialbes that if the threads has a return value to store
 	{
-		printf("data->monitor : pthread_join has been failed\n", i);
+		printf("data->monitor : pthread_join has been failed\n");
 		return (EXIT_FAILURE);
 	}
 	while (i < data->num_philos)
 	{
-		if (pthread_join(&data->philos[i].philo, NULL) != 0) // NULL can be some varialbes that if the threads has a return value to store
+		if (pthread_join(data->philos[i].philo, NULL) != 0) // NULL can be some varialbes that if the threads has a return value to store
 		{
 			printf("data->philos[%d].philo : pthread_join has been failed\n", i);
 			if (detach_thread_philos(data) == 1)

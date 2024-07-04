@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: suminkwon <suminkwon@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 10:46:02 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/03 12:14:21 by suminkwon        ###   ########.fr       */
+/*   Updated: 2024/07/05 01:49:45 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int lock_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 
 int init_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 {
-	if (pthread_mutex_lock(mutex) != 0)
+	if (pthread_mutex_init(mutex, NULL) != 0)
 	{
 		printf("%s : thread_mutex_init has been failed\n", name_of_mutex);
 		return (EXIT_FAILURE);
@@ -61,11 +61,15 @@ int rm_all_mutex(t_data *data)
 	{
 		if (destroy_mutex(&data->forks[i], "&data->forks[i]") == EXIT_FAILURE)
 			return (EXIT_FAILURE);
+		if (destroy_mutex(&data->philos[i].lastmeal_lock, "data->lastmeal_lock") == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 		i++;
 	}
-	if (destroy_mutex(&data->philos->left_fork, "data->philos->left_fork") == EXIT_FAILURE)
+	if (destroy_mutex(&data->alive_lock, "data->alive_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (destroy_mutex(&data->philos->right_fork, "data->philos->right_fork") == EXIT_FAILURE)
+	if (destroy_mutex(&data->error_lock, "data->error_lock") == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (destroy_mutex(&data->print_lock, "data->print_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
