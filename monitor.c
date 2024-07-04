@@ -79,7 +79,7 @@ void *monitoring_death(void *d_data)
         if (ft_usleep(data, 1) == EXIT_FAILURE)
             break;
     }
-    return (NULL);
+    return (d_data);
 }
 
 // Sleep to reduce CPU usage
