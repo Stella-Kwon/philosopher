@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 15:42:31 by skwon2            #+#    #+#             */
-/*   Updated: 2024/07/05 02:16:57 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/05 19:38:08 by skwon2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,71 +14,79 @@
 
 int death_time_check(t_data *data, int i)
 {
-    int time;
+    size_t time;
 
-    time = get_time_check(data);
-    if (time == -100)
+    time = get_time();
+    if (time == (size_t)-100)
         return (EXIT_FAILURE);
-    if (lock_mutex(&(data->philos[i].lastmeal_lock), "data->lastmeal_lock") == EXIT_FAILURE)
+    if (lock_mutex(&(data->lastmeal_lock), "data->lastmeal_lock") == EXIT_FAILURE)
         return EXIT_FAILURE;
-    if (data->philos[i].last_meal != data->philos[i].data->init_time && \
+    // printf("time : %ld\n", time - data->philos[i].last_meal);
+    if (data->philos[i].last_meal != 0 && \
     time - data->philos[i].last_meal >= data->philos[i].data->time_to_die)
     {
+        // printf("ALIIIIIVIE\n");
         if (lock_mutex(&data->alive_lock, "data->alive_lock") == EXIT_FAILURE)
             return (EXIT_FAILURE);
         data->all_alive = false;
+        // printf("time : %ld\n", time - data->philos[i].last_meal);
         if (unlock_mutex(&data->alive_lock, "data->alive_lock") == EXIT_FAILURE)
             return (EXIT_FAILURE);
+        // printf("ALVIE\n");
         if (lock_mutex(&(data->print_lock), "data->print_lock") == EXIT_FAILURE)
             return (EXIT_FAILURE);
         if (print_action(data, DIED, data->philos[i].id) == EXIT_FAILURE)
             return (EXIT_FAILURE);
-
         if (unlock_mutex(&(data->print_lock), "data->print_lock") == EXIT_FAILURE)
             return (EXIT_FAILURE);
-    }
-    if (unlock_mutex(&(data->philos[i].lastmeal_lock), "data->lastmeal_lock") == EXIT_FAILURE)
+        // printf("ssss\n");
+        if (unlock_mutex(&(data->lastmeal_lock), "data->lastmeal_lock") == EXIT_FAILURE)
             return EXIT_FAILURE;
+        // printf("ssss\n");
+        return EXIT_FAILURE;
+    }
+    if (unlock_mutex(&(data->lastmeal_lock), "data->lastmeal_lock") == EXIT_FAILURE)
+        return EXIT_FAILURE;
     return (EXIT_SUCCESS);
 }
 
-int get_time_check(t_data *data)
-{
-    int time;
+// int get_time(t_data *data)
+// {
+//     int time;
     
-    time = get_time(data);
-    if (time == -100)
-    {
-        if (lock_mutex(&data->error_lock, "data->error_lock") == EXIT_FAILURE)
-            return (EXIT_FAILURE);
-        data->error_flag = true;
-        if (unlock_mutex(&data->error_lock, "data->error_lock") == EXIT_FAILURE)
-            return (EXIT_FAILURE);
-        return (EXIT_FAILURE);
-    }
-    return (time);
-}
+//     time = get_time(data);
+//     if (time == -100)
+//     {
+//         if (lock_mutex(&data->error_lock, "data->error_lock") == EXIT_FAILURE)
+//             return (EXIT_FAILURE);
+//         data->error_flag = true;
+//         if (unlock_mutex(&data->error_lock, "data->error_lock") == EXIT_FAILURE)
+//             return (EXIT_FAILURE);
+//         return (EXIT_FAILURE);
+//     }
+//     return (time);
+// }
 
 void *monitoring_death(void *d_data)
 {
     t_data *data;
-    int i;
+    size_t  i;
     
     data = (t_data *)d_data;
     i = 0;
     while (1)
     {
-        // if (death_time_check(data, i) == EXIT_FAILURE)
-        //     break;
+        if (death_time_check(data, i) == EXIT_FAILURE)
+            break;
         if (check_alive_error(data) == EXIT_FAILURE)
 			break;
-
         i++;
         if (i >= data->num_philos)
             i = 0;
         if (ft_usleep(data, 1) == EXIT_FAILURE)
             break;
     }
+    // printf("monitoring thread %ld\n", i);
     return (d_data);
 }
 

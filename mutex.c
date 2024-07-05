@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 10:46:02 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/05 01:49:45 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/05 19:31:08 by skwon2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ int init_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 
 int destroy_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 {
+	(void)name_of_mutex;
 	if (pthread_mutex_destroy(mutex) != 0)
 	{
+		perror ("reason : ");
 		printf("%s : thread_mutex_destroy has been failed\n", name_of_mutex);
 		return (EXIT_FAILURE);
 	}
@@ -54,15 +56,14 @@ int destroy_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 
 int rm_all_mutex(t_data *data)
 {
-	int i;
+	size_t	i;
 
-	i = 0;
+	i=0;
 	while (i < data->num_philos)
 	{
+		printf("id : %ld\n", i);
 		if (destroy_mutex(&data->forks[i], "&data->forks[i]") == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		if (destroy_mutex(&data->philos[i].lastmeal_lock, "data->lastmeal_lock") == EXIT_FAILURE)
-		return (EXIT_FAILURE);
 		i++;
 	}
 	if (destroy_mutex(&data->alive_lock, "data->alive_lock") == EXIT_FAILURE)
@@ -70,6 +71,8 @@ int rm_all_mutex(t_data *data)
 	if (destroy_mutex(&data->error_lock, "data->error_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (destroy_mutex(&data->print_lock, "data->print_lock") == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (destroy_mutex(&data->lastmeal_lock, "data->lastmeal_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

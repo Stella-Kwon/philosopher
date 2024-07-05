@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_time.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:16:54 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/05 01:40:14 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/05 16:54:44 by skwon2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	get_time()
+size_t	get_time()
 {
     struct timeval time; 
 	// tv_sec: 이 필드는 Epoch 시점(1970년 1월 1일 00:00:00 UTC)부터 현재까지의 초 단위 시간을 나타냅니다.
@@ -22,5 +22,5 @@ int	get_time()
 		printf("gettimeofday is failed\n");
 		return (-100);
 	}
-    return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+    return ((size_t)(time.tv_sec * 1000) + (time.tv_usec / 1000));
 }

@@ -15,7 +15,7 @@ SRCS = philo.c \
 		threads.c\
 		valid_arg.c\
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g -lpthread
 # ThreadSanitizer (-fsanitize=thread):
 
 # 목적: 데이터 경합(race conditions), 잠금 순서 위반(lock order violations), 그리고 기타 동시성 문제를 감지합니다.

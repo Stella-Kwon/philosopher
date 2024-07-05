@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_shell.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:17:23 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/05 02:23:07 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/05 17:47:03 by skwon2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 int	print_action(t_data *data, int actions, int philo)
 {
-	int time;
+	size_t time;
 	// unlock할떼 다른 이전 lock해준것을 커버해줘야해서
 	// 따로 actions.c에다가 빼줌 print 부르기 이전에
 	// if (lock_mutex(&(data->print_lock), "data->print_lock") == EXIT_FAILURE)
 	// 	return (EXIT_FAILURE);
-	time = get_time_check(data);
-	if (time == -100)
+	time = get_time(data);
+	if (time == (size_t)-100)
 		return (EXIT_FAILURE);
 	time = time - data->init_time;
-	printf("%d %d ", time, philo);
+	printf("%ld %d ", time, philo);
 	if (actions == DIED)
 		printf("died\n");
 	else if (actions == TAKEN_FORKS)

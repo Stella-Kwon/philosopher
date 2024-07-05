@@ -26,18 +26,18 @@ typedef struct s_threads
 {
 	int id;
 	pthread_t philo;
-	int last_meal;
-	pthread_mutex_t lastmeal_lock;
+	size_t last_meal;
+	int	ate;
 	struct s_data *data; // 순환 참조 circular reference를 막기 위해 포인터로 불러오기
 
 } t_threads;
 
 typedef struct s_data
 {
-	int num_philos;
-	int time_to_die;
-	int time_to_eat;
-	int time_to_sleep;
+	size_t num_philos;
+	size_t time_to_die;
+	size_t time_to_eat;
+	size_t time_to_sleep;
 	int must_eat_count;
 	bool all_alive; // TRUE or FALSE
 	bool error_flag; // TRUE or FALSE
@@ -45,8 +45,9 @@ typedef struct s_data
 	pthread_mutex_t error_lock;
 	pthread_mutex_t eaten_meal_lock;
 	pthread_mutex_t print_lock;
+	pthread_mutex_t lastmeal_lock;
 	pthread_mutex_t *forks; // 그냥 어쩌면 이거자체가 forks의 의미지
-	int init_time;
+	size_t init_time;
 	// int timestamps;
 	int eaten_meal_count;
 	struct s_threads *philos;
@@ -64,7 +65,7 @@ int	check_valid_args(int argc, char **argv);
 int	data_philos_init_whole(t_data *data, char **argv);
 
 // get_time
-int get_time();
+size_t get_time();
 
 // print_shell
 int print_action(t_data *data, int actions, int philo);
@@ -93,12 +94,12 @@ int		sleeping(t_threads *philo);
 
 // routines
 void	*philo_routine(void *philos);
-int	ft_usleep(t_data *data, int time);
+int	ft_usleep(t_data *data, size_t time);
 int	check_alive_error(t_data *data);
+int	check_eat_count(t_data *data);
 
 // monitor
 void    *monitoring_death(void *d_data);
-int get_time_check(t_data *data);
 int death_time_check(t_data *data, int i);
 
 #endif
