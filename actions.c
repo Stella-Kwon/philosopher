@@ -6,7 +6,7 @@
 /*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:14:36 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/06 17:53:24 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/06 21:47:23 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ int	lock_both_fork(t_threads *philo)
 	if (lock_mutex(&philo->data->forks[right_index], "philo->data->forks[right_index]") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	philo->right_f = true;
-	if (check_all_alive(philo->data) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
 	if (print_action(philo->data, TAKEN_FORKS, philo->id, NULL) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (philo->data->num_philos == 1)
@@ -74,7 +72,8 @@ int last_meal_time(t_threads *philo)
 			return (EXIT_FAILURE);
 		return (EXIT_FAILURE);
 	}
-    if (unlock_mutex(&(philo->data->lastmeal_lock), "data->lastmeal_lock") == EXIT_FAILURE)
+	// printf("lastmeal time : %zu\n", philo->last_meal);
+	if (unlock_mutex(&(philo->data->lastmeal_lock), "data->lastmeal_lock") == EXIT_FAILURE)
         return (EXIT_FAILURE);
 	//여기다 가바로해줘야해 포크들고 먹기 시간 주기전에
 	if (lock_mutex(&philo->data->eaten_meal_lock, "philo->data->eaten_meal_lock") == EXIT_FAILURE)

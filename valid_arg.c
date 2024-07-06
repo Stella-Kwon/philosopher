@@ -6,7 +6,7 @@
 /*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 16:45:18 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/04 10:24:54 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/06 18:35:56 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	check_valid_args(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
-		return (error_print("Prompt should be like this :\n ./philo_bonus <philo_count> <time_to_die> "
-				"<time_to_eat> <time_to_sleep> [times_each_must_eat]\n"));
+		return (error_print("Prompt should be like this :\n ./philo <philo_count> \
+		<time_to_die> <time_to_eat> <time_to_sleep> [times_each_must_eat]\n"));
 	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[1]) > INT_MAX )
 		return (error_print("Invalid number of philosophers"));
 	if (ft_atoi(argv[2]) <= 0)

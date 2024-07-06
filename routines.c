@@ -6,7 +6,7 @@
 /*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 10:55:38 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/06 17:30:44 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/06 21:13:01 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,12 @@ void	*philo_routine(void *philos)
 	
 	philo = (t_threads *)philos;
 	if (philo->data->must_eat_count == 0)
-		return (philo);
+		return (philo);;
 	if (philo->id % 2 == 0)
 	{
 		if (ft_usleep(philo->data, philo->data->time_to_eat) == EXIT_FAILURE)
 			return (philos);
 	}
-	
 	while (1)// 모니터링이랑은 별개로 이렇게 해야 (사실 모든 액션에 다 check_all_alive가 있음) 각 스레드가 죽어 all_alive == false일떄
 	{
 		if (check_all_alive(philo->data) == EXIT_FAILURE)
@@ -56,8 +55,6 @@ void	*philo_routine(void *philos)
 			break;
 		if (thinking(philo) == EXIT_FAILURE)
 			break;
-		// if (ft_usleep(philo->data, 10) == EXIT_FAILURE)
-		// 	break;
 	}
 	unlock_both_fork(philo);
 	return (philos);

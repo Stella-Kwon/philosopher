@@ -6,7 +6,7 @@
 /*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:17:23 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/06 12:20:37 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/06 21:00:57 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	print_action(t_data *data, int actions, int philo, char *msg)
 	if (time == (size_t)-100)
 		return (EXIT_FAILURE);
 	time = time - data->init_time;
+	if (check_all_alive(data) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	if (lock_mutex(&(data->print_lock), "data->print_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	printf("%ld %d ", time, philo);
