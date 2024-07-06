@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mutex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 10:46:02 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/05 19:31:08 by skwon2           ###   ########.fr       */
+/*   Updated: 2024/07/06 14:36:07 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int destroy_mutex(pthread_mutex_t *mutex, char *name_of_mutex)
 	(void)name_of_mutex;
 	if (pthread_mutex_destroy(mutex) != 0)
 	{
-		perror ("reason : ");
 		printf("%s : thread_mutex_destroy has been failed\n", name_of_mutex);
 		return (EXIT_FAILURE);
 	}
@@ -59,20 +58,20 @@ int rm_all_mutex(t_data *data)
 	size_t	i;
 
 	i=0;
-	while (i < data->num_philos)
-	{
-		printf("id : %ld\n", i);
-		if (destroy_mutex(&data->forks[i], "&data->forks[i]") == EXIT_FAILURE)
-			return (EXIT_FAILURE);
-		i++;
-	}
 	if (destroy_mutex(&data->alive_lock, "data->alive_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (destroy_mutex(&data->error_lock, "data->error_lock") == EXIT_FAILURE)
+	if (destroy_mutex(&data->eaten_meal_lock, "data->eaten_meal_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (destroy_mutex(&data->print_lock, "data->print_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (destroy_mutex(&data->lastmeal_lock, "data->lastmeal_lock") == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	while (i < data->num_philos)
+	{
+		if (destroy_mutex(&data->forks[i], "&data->forks[i]") == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		i++;
+	}
+
 	return (EXIT_SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: skwon2 <skwon2@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 23:05:41 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/05 16:36:45 by skwon2           ###   ########.fr       */
+/*   Updated: 2024/07/06 17:39:41 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int create_thread_philos(t_data *data)
 			printf("data->philos[%ld].philo : pthread_create has been failed\n", i);
 			if (detach_thread_philos(data) == 1)
 				return (EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 		i++;
 	}
@@ -70,6 +71,7 @@ int wait_threads(t_data *data)
 			printf("data->philos[%ld].philo : pthread_join has been failed\n", i);
 			if (detach_thread_philos(data) == 1)
 				return (EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 		i++;
 	}

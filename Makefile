@@ -2,6 +2,8 @@ NAME = philo
 
 INCLUDES = -I./
 
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+
 SRCS = philo.c \
 		free.c \
 		ft_atoi.c \
@@ -13,9 +15,10 @@ SRCS = philo.c \
 		routines.c\
 		actions.c\
 		threads.c\
-		valid_arg.c\
+		valid_arg.c
 
-CFLAGS = -Wall -Wextra -Werror -g -lpthread
+
+#-lpthread
 # ThreadSanitizer (-fsanitize=thread):
 
 # 목적: 데이터 경합(race conditions), 잠금 순서 위반(lock order violations), 그리고 기타 동시성 문제를 감지합니다.
