@@ -6,17 +6,17 @@
 /*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 22:17:23 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/06 21:00:57 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/06 22:38:03 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	print_action(t_data *data, int actions, int philo, char *msg)
+int	print_action(t_data *data, int actions, int philo)
 {
-	size_t time;
-	
-	time = get_time(data);
+	size_t	time;
+
+	time = get_time();
 	if (time == (size_t)-100)
 		return (EXIT_FAILURE);
 	time = time - data->init_time;
@@ -35,10 +35,9 @@ int	print_action(t_data *data, int actions, int philo, char *msg)
 		printf("is thinking\n");
 	else if (actions == SLEEPING)
 		printf("is sleeping\n");
-	else if (actions == -1)
-		printf("int print : %d or msg print : %s\n", philo, msg);
-	if (unlock_mutex(&(data->print_lock), "data->print_lock") == EXIT_FAILURE)
-		 return (EXIT_FAILURE);
+	if (unlock_mutex(&(data->print_lock), \
+	"data->print_lock") == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

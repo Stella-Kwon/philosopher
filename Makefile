@@ -3,7 +3,7 @@ NAME = philo
 INCLUDES = -I./
 
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
-
+#-lpthread
 SRCS = philo.c \
 		free.c \
 		ft_atoi.c \
@@ -15,18 +15,9 @@ SRCS = philo.c \
 		routines.c\
 		actions.c\
 		threads.c\
-		valid_arg.c
+		valid_arg.c\
+		left_right_forks.c
 
-
-#-lpthread
-# ThreadSanitizer (-fsanitize=thread):
-
-# 목적: 데이터 경합(race conditions), 잠금 순서 위반(lock order violations), 그리고 기타 동시성 문제를 감지합니다.
-# 사용 경우: 멀티쓰레드 프로그램에서의 동시성 문제를 찾기 위해 사용합니다.
-# AddressSanitizer (-fsanitize=address):
-
-# 목적: 메모리 관련 오류, 예를 들어 버퍼 오버플로, 사용 후 해제된 메모리 접근(use-after-free), 해제된 메모리 접근(double-free) 등을 감지합니다.
-# 사용 경우: 메모리 관리 문제가 의심될 때 사용합니다.
 OBJS = ${SRCS:.c=.o}
 
 all: ${NAME}

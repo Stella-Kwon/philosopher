@@ -6,7 +6,7 @@
 /*   By: sukwon <sukwon@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 21:20:25 by sukwon            #+#    #+#             */
-/*   Updated: 2024/07/06 11:19:08 by sukwon           ###   ########.fr       */
+/*   Updated: 2024/07/06 22:21:35 by sukwon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	main(int argc, char	**argv)
 {
-	t_data		data;
+	t_data	data;
 
 	if (check_valid_args(argc, argv) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
