@@ -76,7 +76,7 @@ static int	init_forks_mutex(t_data *data)
 	{
 		if (init_mutex(&data->forks[i], "data->forks[i]") == EXIT_FAILURE)
 		{
-			while (i >= 0)
+			while (i > 0 || i == 0)
 			{
 				if (destroy_mutex(&data->forks[i], \
 				"data->forks[i]") == EXIT_FAILURE)

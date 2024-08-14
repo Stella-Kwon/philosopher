@@ -2,7 +2,8 @@ NAME = philo
 
 INCLUDES = -I./
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g
+#-fsanitize=thread
 #-lpthread
 SRCS = philo.c \
 		free.c \

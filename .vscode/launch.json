@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/kwonsumin/Desktop/philo",
-      "program": "/Users/kwonsumin/Desktop/philo/build/Debug/outDebug"
+      "cwd": "/Users/suminkwon/Desktop/philosopher",
+      "program": "/Users/suminkwon/Desktop/philosopher/build/Debug/outDebug"
     }
   ]
 }
